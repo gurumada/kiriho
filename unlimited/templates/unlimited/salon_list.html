@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>サロン一覧</title>
+</head>
+<h1>サロン一覧</h1>
+<div>
+
+<!-- ここにデータが入る -->
+
+{% for salon in salon_list %}
+    <div>
+        {{ salon.salon_name}}<br/>
+        {{ salon.home_page }}<br/>
+        {{ salon.salon_phone_num }}<br/>
+        {{ salon.salon_address }}<br/>
+        {{ salon.business_hours }}<br/>
+
+    </div>
+{% endfor %}
+
+</div>
+</body>
+</html>
