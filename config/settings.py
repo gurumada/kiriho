@@ -130,6 +130,7 @@ STATICFILES_DIRS = (
 ##########################
 # Authentication Setting #
 ##########################
+AUTH_USER_MODEL = 'unlimited.User'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -146,8 +147,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
 
 SITE_ID = 1
-LOGIN_REDIRECT_URL = ''
-ACCOUNT_LOGOUT_REDIRECT_URL = 'login/'
+LOGIN_REDIRECT_URL = 'salon_list'
+ACCOUNT_LOGOUT_REDIRECT_URL = ''
 
 ##################
 # Email Settings #
