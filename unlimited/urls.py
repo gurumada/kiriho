@@ -1,14 +1,30 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from unlimited.views import SalonListView, Mypage
+from unlimited import views
 
 
 app_name = 'unlimited'
 urlpatterns = [
-    path('salon_list/', SalonListView.as_view(), name='salon_list'),
-    path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
+    path('salon_list/', views.SalonListView.as_view(), name='salon_list'),
+    #path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
 
-    path('mypage/', Mypage.as_view(), name='my_page'),
-    #path('mypage/<int:pk>/', ),
+    path('mypage/', views.Mypage.as_view(), name='my_page'),
 
+    path('', views.Top.as_view(), name='landing'),
+    path('login/', views.Login.as_view(), name='login'),
+    path('logout/', views.Logout.as_view(), name='logout'),
+    path('user_create/', views.UserCreate.as_view(), name='user_create'),
+    path('user_create/done/', views.UserCreateDone.as_view(), name='user_create_done'),
+    path('user_create/complete/<token>/', views.UserCreateComplete.as_view(), name='user_create_complete'),
+    path('user_detail/<int:pk>/', views.UserDetail.as_view(), name='user_detail'),
+    path('user_update/<int:pk>/', views.UserUpdate.as_view(), name='user_update'),
+    path('password_change/', views.PasswordChange.as_view(), name='password_change'),
+    path('password_change/done/', views.PasswordChangeDone.as_view(), name='password_change_done'),
+    path('password_reset/', views.PasswordReset.as_view(), name='password_reset'),
+    path('password_reset/done/', views.PasswordResetDone.as_view(), name='password_reset_done'),
+    path('password_reset/confirm/<uidb64>/<token>/', views.PasswordResetConfirm.as_view(), name='password_reset_confirm'),
+    path('password_reset/complete/', views.PasswordResetComplete.as_view(), name='password_reset_complete'),
+    path('email/change/', views.EmailChange.as_view(), name='email_change'),
+    path('email/change/done/', views.EmailChangeDone.as_view(), name='email_change_done'),
+    path('email/change/complete/<str:token>/', views.EmailChangeComplete.as_view(), name='email_change_complete'),
 ]

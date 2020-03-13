@@ -15,12 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
-from unlimited.views import SalonListView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('unlimited/', include('allauth.urls')),
     path('', include('unlimited.urls')),
-
 ]
