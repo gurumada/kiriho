@@ -35,11 +35,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'unlimited',
-    'django.contrib.sites',
-    #'allauth',
-    #'allauth.account',
-    #'allauth.socialaccount',
+    'unlimited.apps.UnlimitedConfig',
+    # 'django.contrib.sites',
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
 
 ]
 
@@ -121,37 +121,46 @@ USE_TZ = True
 # Static File Setting #
 #######################
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.normpath(os.path.join(BASE_DIR, "static")),
-)
+# STATICFILES_DIRS = (
+#     os.path.normpath(os.path.join(BASE_DIR, "static")),
+# )
 
 ##########################
 # Authentication Setting #
 ##########################
 AUTH_USER_MODEL = 'unlimited.User'
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
+LOGIN_URL = 'unlimited:login'
+LOGIN_REDIRECT_URL = 'unlimited:landing'
+
+#######################
+# django-allauthの設定 #
+#######################
+
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend',
+#     'allauth.account.auth_backends.AuthenticationBackend',
+# )
 
 # 認証方式をメールとパスワードにする
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
 # ユーザー名は使用しない
-ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_USERNAME_REQUIRED = False
 # ユーザー名フィールドはいらない
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
 # Emailを必須登録とする
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_UNIQUE_EMAIL = True
 
-SITE_ID = 1
-LOGIN_REDIRECT_URL = 'salon_list'
-ACCOUNT_LOGOUT_REDIRECT_URL = ''
+# SITE_ID = 1
+# LOGIN_REDIRECT_URL = 'salon_list'
+# ACCOUNT_LOGOUT_REDIRECT_URL = ''
+###########################
+
 
 ##################
 # Email Settings #

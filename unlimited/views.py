@@ -23,7 +23,7 @@ from .forms import (
 User = get_user_model()
 
 
-class Top(generic.TemplateView):
+class Landing(generic.TemplateView):
     template_name = 'unlimited/landing.html'
 
 

@@ -5,12 +5,7 @@ from unlimited import views
 
 app_name = 'unlimited'
 urlpatterns = [
-    path('salon_list/', views.SalonListView.as_view(), name='salon_list'),
-    #path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
-
-    path('mypage/', views.Mypage.as_view(), name='my_page'),
-
-    path('', views.Top.as_view(), name='landing'),
+    path('', views.Landing.as_view(), name='landing'),
     path('login/', views.Login.as_view(), name='login'),
     path('logout/', views.Logout.as_view(), name='logout'),
     path('user_create/', views.UserCreate.as_view(), name='user_create'),
@@ -27,4 +22,10 @@ urlpatterns = [
     path('email/change/', views.EmailChange.as_view(), name='email_change'),
     path('email/change/done/', views.EmailChangeDone.as_view(), name='email_change_done'),
     path('email/change/complete/<str:token>/', views.EmailChangeComplete.as_view(), name='email_change_complete'),
+
+    path('salon_list/', views.SalonListView.as_view(), name='salon_list'),
+    #path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
+
+    path('mypage/', views.Mypage.as_view(), name='my_page'),
+
 ]
