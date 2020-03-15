@@ -24,7 +24,6 @@ urlpatterns = [
     path('email/change/complete/<str:token>/', views.EmailChangeComplete.as_view(), name='email_change_complete'),
 
     path('salon_list/', views.SalonListView.as_view(), name='salon_list'),
-    #path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
 
     path('mypage/', views.Mypage.as_view(), name='my_page'),
 

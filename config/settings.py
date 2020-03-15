@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'unlimited.User'
 
 LOGIN_URL = 'unlimited:login'
-LOGIN_REDIRECT_URL = 'unlimited:landing'
+LOGIN_REDIRECT_URL = 'unlimited:salon_list'
 
 #######################
 # django-allauthの設定 #

@@ -1,0 +1,13 @@
+{% extends "unlimited/base.html" %}
+{% block content %}
+
+<h1>サロン一覧</h1>
+    {% for salon in salon_list %}
+        {{ salon.salon_name}}
+        {{ salon.home_page }}
+        {{ salon.salon_phone_num }}
+        {{ salon.salon_address }}
+        {{ salon.business_hours }}
+    {% endfor %}
+
+{% endblock %}
