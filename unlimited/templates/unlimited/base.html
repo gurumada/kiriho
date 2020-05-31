@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
           integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 
+
     <title>Cylop</title>
 </head>
 <body>
@@ -22,21 +23,45 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           {% if user.is_authenticated %}
-          <li>
-            <a class="nav-item nav-link" href="{% url 'unlimited:user_detail' user.pk %}">ユーザー情報閲覧</a>
-          </li>
-          <li>
-            <a class="nav-item nav-link" href="{% url 'unlimited:user_update' user.pk %}">ユーザー情報更新</a>
-          </li>
-          <li>
-            <a class="nav-item nav-link" href="{% url 'unlimited:logout' %}">ログアウト</a>
-          </li>
-          <li>
-            <a class="nav-item nav-link" href="{% url 'unlimited:password_change' %}">パスワードの変更</a>
-          </li>
-          <li>
-            <a class="nav-item nav-link" href="{% url 'unlimited:email_change' %}">メールアドレスの変更</a>
-          </li>
+            {% if user.is_user %}
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:salon_list' %}">サロン一覧</a>
+              </li>
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:user_detail' user.pk %}">マイページ</a>
+              </li>
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:user_update' user.pk %}">ユーザー情報更新</a>
+              </li>
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:password_change' %}">パスワードの変更</a>
+              </li>
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:email_change' %}">メールアドレスの変更</a>
+              </li>
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:logout' %}">ログアウト</a>
+              </li>
+            {% else %}
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:user_detail' user.pk %}">ダッシュボード</a>
+              </li>
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:stylist_list' %}">スタイリスト一覧</a>
+              </li>
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:user_update' user.pk %}">ユーザー情報更新</a>
+              </li>
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:password_change' %}">パスワードの変更</a>
+              </li>
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:email_change' %}">メールアドレスの変更</a>
+              </li>
+              <li>
+                <a class="nav-item nav-link" href="{% url 'unlimited:logout' %}">ログアウト</a>
+              </li>
+            {% endif %}
           {% else %}
           <li class="nav-item">
             <a class="nav-item nav-link" href="{% url 'unlimited:login' %}">
@@ -50,7 +75,9 @@
 
     <!-- メインコンテント -->
     <div class="container mt-3">
-        {% block content %}{% endblock %}
+        {% block content %}
+
+        {% endblock %}
     </div>
 
     <!-- Optional JavaScript -->

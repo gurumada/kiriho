@@ -1,5 +1,6 @@
-from django.views.generic import ListView
-from .models import Salon
+import random
+import string
+from .models import Salon, Stylist, Reservation
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -11,14 +12,16 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.core.signing import BadSignature, SignatureExpired, loads, dumps
 from django.http import HttpResponseBadRequest
-from django.shortcuts import redirect, resolve_url
+from django.shortcuts import redirect, resolve_url, render, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views import generic
 from .forms import (
     LoginForm, UserCreateForm, UserUpdateForm, MyPasswordChangeForm,
-    MyPasswordResetForm, MySetPasswordForm, EmailChangeForm
-)
+    MyPasswordResetForm, MySetPasswordForm, EmailChangeForm,
+    StylistCreateForm, ReservationCreateForm, SalonUpdateForm)
+from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 
 User = get_user_model()
 
@@ -49,6 +52,9 @@ class UserCreate(generic.CreateView):
         # 退会処理も、is_activeをFalseにするだけにしておくと捗ります。
         user = form.save(commit=False)
         user.is_active = False
+        # random_username = ''.join([random.choice(string.ascii_letters + string.digits) for i in range(6)])
+        # print(random_username)
+        # user.username = random_username
         user.save()
 
         # アクティベーションURLの送付
@@ -228,16 +234,225 @@ class EmailChangeComplete(LoginRequiredMixin, generic.TemplateView):
             return super().get(request, **kwargs)
 
 
-class SalonListView(ListView):
+class Dashboard(LoginRequiredMixin, generic.TemplateView):
+    model = User
+    template_name = 'dashboard.html'
+
+
+class SalonListView(generic.ListView):
     model = Salon
-    context_object_name = 'salon_list'
     template_name = 'salon_list.html'
 
 
-class Mypage(LoginRequiredMixin, generic.TemplateView):
-    template_name = 'my_page.html'
+class SalonUpdateView(generic.UpdateView):
+    model = Salon
+    template_name = 'unlimited/salon_update.html'
+    form_class = SalonUpdateForm
+
+    def form_valid(self, form):
+        salon = form.save(commit=False)
+        salon.save()
+        return redirect('unlimited:salon_update_complete')
+
+
+class SalonUpdateComplete(generic.TemplateView):
+    template_name = 'unlimited/salon_update_complete.html'
+
+
+class StylistList(generic.ListView):
+    model = Stylist
+    template_name = 'unlimited/stylist_list.html'
 
     def get_context_data(self, **kwargs):
+        today = timezone.datetime.now().date()
+        month = timezone.datetime.now().month
+        first_day = today.replace(day=1)
+        last_day = (today + relativedelta(month=month + 1)).replace(day=1)
+        # ログインユーザーのサロン：target_salon
+        target_salon = Salon.objects.get(salon=self.request.user.pk)
+
+        # 本日以降の予約情報：reservations
+        reservations = Reservation.objects.filter(salon=target_salon.id, date__gte=first_day).order_by('date')
+
+        # 今月の施術完了数
+        monthly_info = Reservation.objects.filter(salon=target_salon.id, date__gte=first_day,
+                                                  date__lt=last_day, status=1)
+        monthly_count = monthly_info.count()
+
+        # 今月のフルカット数
+        monthly_count_full_cut = monthly_info.filter(treatment=0).count()
+
+        # 今月のフルカラー数
+        monthly_count_full_color = monthly_info.filter(treatment=1).count()
+
+        # 今月のメンテカット数
+        monthly_count_mainte_cut = monthly_info.filter(treatment=2).count()
+
+        # 今月のメンテカラー数
+        monthly_count_mainte_color = monthly_info.filter(treatment=3).count()
+
+        # サロン情報の取得
+        salon_info = Salon.objects.filter(salon=self.request.user.pk)
+
+        # 今月のフルカット売上
+        full_cut_prise = salon_info.values('cut_prise')
+        monthly_sales_full_cut = monthly_count_full_cut * full_cut_prise[0]['cut_prise']
+
+        # 今月のフルカラー売上
+        full_color_prise = salon_info.values('color_prise')
+        monthly_sales_full_color = monthly_count_full_color * full_color_prise[0]['color_prise']
+
+        # 今月のメンテカット売上
+        mainte_cut_prise = salon_info.values('mainte_cut_prise')
+        monthly_sales_mainte_cut = monthly_count_mainte_cut * mainte_cut_prise[0]['mainte_cut_prise']
+
+        # 今月のメンテカラー売上
+        mainte_color_prise = salon_info.values('mainte_color_prise')
+        monthly_sales_mainte_color = monthly_count_mainte_color * mainte_color_prise[0]['mainte_color_prise']
+
+        # 今月の総売上
+        monthly_sales = (monthly_sales_full_cut + monthly_sales_full_color + monthly_sales_mainte_cut +
+                         monthly_sales_mainte_color)
+
         context = super().get_context_data(**kwargs)
-        # TODO:戻り値を追加する？
+        context.update({
+            'salon_id': target_salon.id,
+            'reservations': reservations,
+            'month': month,
+            'monthly_count': monthly_count,
+            'monthly_sales': monthly_sales,
+        })
+
         return context
+
+
+class StylistDetail(generic.DetailView):
+    model = Stylist
+    template_name = 'unlimited/stylist_detail.html'
+
+    def get_context_data(self, **kwargs):
+        stylist = self.kwargs['pk']
+        reservations = Reservation.objects.filter(stylist=stylist)
+        count = Reservation.objects.filter(stylist=stylist).count()
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'reservations': reservations,
+            'count': count,
+        })
+        return context
+
+
+class StylistCreate(generic.CreateView):
+    model = Stylist
+    form_class = StylistCreateForm
+
+    def form_valid(self, form):
+        salon_pk = self.kwargs['affiliation_salon_id']
+        salon = get_object_or_404(Salon, pk=salon_pk)
+        stylist = form.save(commit=False)
+        stylist.affiliation_salon = salon
+        stylist.save()
+        return redirect('unlimited:stylist_list')
+
+
+class StylistDelete(generic.DeleteView):
+    model = Stylist
+    success_url = reverse_lazy('unlimited:stylist_list')
+
+
+class ReservationCreate(generic.CreateView):
+    model = Reservation
+    form_class = ReservationCreateForm
+
+    def get_form_kwargs(self):
+        salon_pk = self.kwargs['salon_id']  # formへ渡す変数
+        kwargs = super(ReservationCreate, self).get_form_kwargs()
+        # kwargs.update({'salon_pk': salon_pk})
+        kwargs['salon_pk'] = salon_pk
+        return kwargs
+
+    def form_valid(self, form):
+        # salon_pk = self.kwargs['salon_id']
+        # salon = get_object_or_404(Salon, pk=salon_pk)
+        # stylist = get_object_or_404(Stylist, affiliation_salon=salon_pk)
+        reservation = form.save(commit=False)
+        # reservation.salon = salon
+        # reservation.stylist = stylist
+        reservation.save()
+        return redirect('unlimited:reservation_create_complete')
+
+
+class ReservationCreateComplete(generic.TemplateView):
+    template_name = 'unlimited/reservation_create_complete.html'
+
+
+# class ReservationUpdate(generic.UpdateView):
+#     model = Reservation
+
+
+def reservation_update(request, reservation_id):
+    if request.method == 'POST':
+
+        if 'complete' in request.POST:
+            reservation = Reservation.objects.get(id=reservation_id)
+            reservation.status = 1
+            reservation.save()
+
+        elif 'cancel' in request.POST:
+            reservation = Reservation.objects.get(id=reservation_id)
+            reservation.status = 2
+            reservation.save()
+
+        elif 'dotacan' in request.POST:
+            reservation = Reservation.objects.get(id=reservation_id)
+            reservation.status = 3
+            reservation.save()
+
+    return redirect('unlimited:stylist_list')
+
+
+def reservation_member_search(request, user_name):
+    # print(request.POST.get('search', None))
+    print(request.method)
+    member = request.POST['member']
+    print(member)
+    print(user_name)
+    if request.method == 'POST':
+        if 'search' in request.POST:
+            try:
+                user = User.objects.get(user_name=member)
+                print(user.first_name)
+                print(user.last_name)
+            except User.DoesNotExist:
+                user = 'ユーザーが見つかりません'
+                print(user)
+    context = {
+        'user': user
+    }
+    return render(request, 'unlimited/reservation_form.html', context)
+
+# 以下は使用していないメソッド
+# def stylist_create(request):
+#     # salon_id = get_object_or_404(Salon, pk=pk)
+#     form = StylistCreateForm(request.POST or None)
+#     if request.method == 'POST' and form.is_valid():
+#         form.save()
+#         return redirect('unlimited:stylist_list')
+#     context = {
+#         'form': form
+#     }
+#     # context = {
+#     #     'form': StylistCreateForm()
+#     # }
+#     return render(request, 'unlimited/stylist_form.html', context)
+
+# def stylist_create_send(request):
+#     form = StylistCreateForm(request.POST)
+#     if form.is_valid():
+#         form.save()
+#         return redirect('unlimited:salon_list')
+#     else:
+#         context = {
+#             'form': form,
+#         }
+#         return render(request, 'unlimited/stylist_form.html', context)

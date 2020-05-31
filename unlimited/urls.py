@@ -24,7 +24,17 @@ urlpatterns = [
     path('email/change/complete/<str:token>/', views.EmailChangeComplete.as_view(), name='email_change_complete'),
 
     path('salon_list/', views.SalonListView.as_view(), name='salon_list'),
-
-    path('mypage/', views.Mypage.as_view(), name='my_page'),
+    path('salon_update/<int:pk>/', views.SalonUpdateView.as_view(), name='salon_update'),
+    path('salon_update/complete/', views.SalonUpdateComplete.as_view(), name='salon_update_complete'),
+    path('stylist_list/', views.StylistList.as_view(), name='stylist_list'),
+    path('stylist_detail/<int:pk>/', views.StylistDetail.as_view(), name='stylist_detail'),
+    path('stylist_create/<int:affiliation_salon_id>/', views.StylistCreate.as_view(), name='stylist_create'),
+    #path('stylist_create_send/', views.stylist_create_send, name='stylist_create_send'),
+    path('stylist_delete/<int:pk>/', views.StylistDelete.as_view(), name='stylist_delete'),
+    path('reservation_create/<int:salon_id>/', views.ReservationCreate.as_view(), name='reservation_create'),
+    path('reservation_create/<str:user_name>', views.reservation_member_search, name='reservation_member_search'),
+    path('reservation_create/complete/', views.ReservationCreateComplete.as_view(), name='reservation_create_complete'),
+    path('reservation_update/<int:reservation_id>/', views.reservation_update, name='reservation_update'),
+    path('dashboard/<int:pk>/', views.Dashboard.as_view(), name='dashboard'),
 
 ]

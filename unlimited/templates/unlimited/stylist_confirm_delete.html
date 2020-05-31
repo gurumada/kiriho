@@ -1,0 +1,10 @@
+{% extends "unlimited/base.html" %}
+
+{% block content %}
+    <p>名前：{{ stylist.stylist_name }}を削除します。よろしいですか。</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <button type="submit">削除</button>
+    </form>
+</body>
+{% endblock %}

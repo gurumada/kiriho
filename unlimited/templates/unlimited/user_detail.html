@@ -1,18 +1,43 @@
 {% extends "unlimited/base.html" %}
 {% block content %}
+
+{% if user.is_user %}
+    <h1>ユーザーダッシュボード</h1>
+{% else %}
+    <h1>サロンダッシュボード</h1>
+{% endif %}
+
 <table class="table">
     <tbody>
         <tr>
-            <th>ユーザー名</th>
+            <th>ユーザーID</th>
+            <td>{{ user.user_name }}</td>
+        </tr>
+        <tr>
+            <th>メールアドレス</th>
             <td>{{ user.email }}</td>
         </tr>
         <tr>
-            <th>姓</th>
-            <td>{{ user.last_name }}</td>
+            {% if user.is_user %}
+                <th>姓</th>
+                <td>{{ user.last_name }}</td>
+            {% else %}
+                <th>店舗名</th>
+                <td>{{ user.last_name }}</td>
+            {% endif %}
         </tr>
         <tr>
-            <th>名</th>
-            <td>{{ user.first_name }}</td>
+            {% if user.is_user %}
+                <th>名</th>
+                <td>{{ user.first_name }}</td>
+            {% else %}
+                <th>住所</th>
+                <td>{{ user.first_name }}</td>
+            {% endif %}
+        </tr>
+         <tr>
+            <th>タイプ</th>
+            <td>{{ user.is_user }}</td>
         </tr>
     </tbody>
 </table>

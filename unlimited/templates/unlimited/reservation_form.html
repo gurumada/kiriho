@@ -1,0 +1,61 @@
+{% extends "unlimited/base.html" %}
+
+{% block content %}
+<form action="{% url 'unlimited:reservation_member_search' form.member %}" method="POST">
+     {{ form.non_field_errors }}
+        <table>
+            <tr>
+                <th>{{ form.member.label_tag }}</th>
+                <td>{{ form.member }}</td>
+                <td><button calss="button is-primary" type="submit" name="search">検索</button></td>
+            </tr>
+            <>
+            <tr><span class="helptext">{{ form.member.help_text }}</span></tr>
+            <tr>{{ form.member.errors }}</tr>
+        </table>
+    {% csrf_token %}
+</form>
+<form action="" method="POST">
+    <table>
+        <tr>
+            <th>{{ form.salon.label_tag }}</th>
+            <td>{{ form.salon }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.stylist.label_tag }}</th>
+            <td>{{ form.stylist }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.plan.label_tag }}</th>
+            <td>{{ form.plan }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.treatment.label_tag }}</th>
+            <td>{{ form.treatment }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.add_treat.label_tag }}</th>
+            <td>{{ form.add_treat }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.date.label_tag }}</th>
+            <td>{{ form.date }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.start.label_tag }}</th>
+            <td>{{ form.start }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.end.label_tag }}</th>
+            <td>{{ form.end }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.remarks.label_tag }}</th>
+            <td>{{ form.remarks }}</td>
+        </tr>
+    </table>
+
+    {% csrf_token %}
+    <button calss="button is-primary" type="submit">登録</button>
+</form>
+{% endblock %}

@@ -36,10 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'unlimited.apps.UnlimitedConfig',
-    # 'django.contrib.sites',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
 
 ]
 
@@ -133,7 +129,9 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'unlimited.User'
 
 LOGIN_URL = 'unlimited:login'
-LOGIN_REDIRECT_URL = 'unlimited:salon_list'
+# TODO:LOGIN_REDIRECT_URLはダッシュボードページにする
+LOGIN_REDIRECT_URL = 'unlimited:landing'
+LOGOUT_REDIRECT_URL = 'unlimited:landing'
 
 #######################
 # django-allauthの設定 #

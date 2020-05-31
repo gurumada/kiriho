@@ -1,0 +1,43 @@
+{% extends "unlimited/base.html" %}
+
+{% block content %}
+
+    <h1>{{ stylist.affiliation_salon }}</h1>
+    <p>名前：{{ stylist.stylist_name }}</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'unlimited:stylist_delete' stylist.id %}">スタイリスト削除</a>
+    <br />
+    <br />
+    <p>予約件数：{{ count }}件</p>
+    <br />
+    <table border="5" width="1000">
+        <tr>
+            <th>お客様ID</th>
+            <th>予約サロン</th>
+            <th>指名スタイリスト</th>
+            <th>プラン</th>
+            <th>施術</th>
+            <th>追加施術</th>
+            <th>予約日</th>
+            <th>開始時間</th>
+            <th>終了時間</th>
+            <th>備考</th>
+            <th>ステータス</th>
+        </tr>
+        {% for reservation in reservations %}
+        <tr>
+            <td>{{ reservation.member }}</td>
+            <td>{{ reservation.salon }}</td>
+            <td>{{ reservation.stylist }}</td>
+            <td>{{ reservation.plan }}</td>
+            <td>{{ reservation.treatment }}</td>
+            <td>{{ reservation.add_treat }}</td>
+            <td>{{ reservation.date }}</td>
+            <td>{{ reservation.start }}</td>
+            <td>{{ reservation.end }}</td>
+            <td>{{ reservation.remarks }}</td>
+            <td>{{ reservation.get_status_display }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+{% endblock %}

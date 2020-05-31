@@ -1,13 +1,19 @@
+
+
 {% extends "unlimited/base.html" %}
 {% block content %}
-
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
 <h1>サロン一覧</h1>
     {% for salon in salon_list %}
-        {{ salon.salon_name}}
-        {{ salon.home_page }}
-        {{ salon.salon_phone_num }}
-        {{ salon.salon_address }}
-        {{ salon.business_hours }}
+        {{ salon.salon_name}}<br />
+        {{ salon.home_page }}<br />
+        {{ salon.salon_phone_num }}<br />
+        {{ salon.salon_address }}<br />
+        {{ salon.business_hours }}<br />
     {% endfor %}
-
+</body>
 {% endblock %}
