@@ -10,14 +10,16 @@ from django.conf import settings
 PLAN = (
     (0, 'カットし放題'),
     (1, 'カラーし放題'),
-    (2, 'カット&カラーし放題')
+    (2, 'カット&カラーし放題'),
+    (9, '利用不可')
 )
 
 TREATMENT = (
     (0, 'フルカット'),
     (1, 'フルカラー'),
     (2, 'メンテカット'),
-    (3, 'メンテカラー')
+    (3, 'メンテカラー'),
+    (9, '予約不可')
 )
 
 
@@ -189,8 +191,8 @@ class Reservation(models.Model):
         db_table = 'Reservation'
 
     member = models.CharField(verbose_name='お客様ID', max_length=20)
-    salon = models.ForeignKey(Salon, verbose_name='予約サロン', on_delete=models.PROTECT)
-    stylist = models.ForeignKey(Stylist, verbose_name='指名スタイリスト', on_delete=models.PROTECT)
+    salon = models.ForeignKey(Salon, verbose_name='予約サロン', on_delete=models.PROTECT, blank=False, null=False)
+    stylist = models.ForeignKey(Stylist, verbose_name='指名スタイリスト', on_delete=models.PROTECT, blank=False, null=False)
     # plan = models.ForeignKey(Plan, verbose_name='選択プラン', on_delete=models.PROTECT, blank=True, null=True)
     plan = models.IntegerField(verbose_name='選択プラン', choices=PLAN, default=0)
     # treatment = models.ForeignKey(Treatment, verbose_name='施術', on_delete=models.PROTECT, blank=True, null=True)

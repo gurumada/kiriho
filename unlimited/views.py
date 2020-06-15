@@ -1,17 +1,14 @@
-import random
-import string
 from .models import Salon, Stylist, Reservation
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView,
-    PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
-)
+    PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView)
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.core.signing import BadSignature, SignatureExpired, loads, dumps
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect, resolve_url, render, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
@@ -19,7 +16,7 @@ from django.views import generic
 from .forms import (
     LoginForm, UserCreateForm, UserUpdateForm, MyPasswordChangeForm,
     MyPasswordResetForm, MySetPasswordForm, EmailChangeForm,
-    StylistCreateForm, ReservationCreateForm, SalonUpdateForm)
+    StylistCreateForm, ReservationCreateForm, SalonUpdateForm, )
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 
@@ -272,7 +269,7 @@ class StylistList(generic.ListView):
         target_salon = Salon.objects.get(salon=self.request.user.pk)
 
         # 本日以降の予約情報：reservations
-        reservations = Reservation.objects.filter(salon=target_salon.id, date__gte=first_day).order_by('date')
+        reservations = Reservation.objects.filter(salon=target_salon.id, date__gte=first_day).order_by('-date')
 
         # 今月の施術完了数
         monthly_info = Reservation.objects.filter(salon=target_salon.id, date__gte=first_day,
@@ -365,29 +362,27 @@ class ReservationCreate(generic.CreateView):
     form_class = ReservationCreateForm
 
     def get_form_kwargs(self):
-        salon_pk = self.kwargs['salon_id']  # formへ渡す変数
+        salon_pk = self.kwargs['salon_id']
+        user_name = self.kwargs['user_name']
+        reserve_date = self.request.GET.get('reserve_date')
+        start = self.request.GET.get('start')
+        end = self.request.GET.get('end')
         kwargs = super(ReservationCreate, self).get_form_kwargs()
-        # kwargs.update({'salon_pk': salon_pk})
         kwargs['salon_pk'] = salon_pk
+        kwargs['user_name'] = user_name
+        kwargs['reserve_date'] = reserve_date
+        kwargs['start'] = start
+        kwargs['end'] = end
         return kwargs
 
     def form_valid(self, form):
-        # salon_pk = self.kwargs['salon_id']
-        # salon = get_object_or_404(Salon, pk=salon_pk)
-        # stylist = get_object_or_404(Stylist, affiliation_salon=salon_pk)
         reservation = form.save(commit=False)
-        # reservation.salon = salon
-        # reservation.stylist = stylist
         reservation.save()
         return redirect('unlimited:reservation_create_complete')
 
 
 class ReservationCreateComplete(generic.TemplateView):
     template_name = 'unlimited/reservation_create_complete.html'
-
-
-# class ReservationUpdate(generic.UpdateView):
-#     model = Reservation
 
 
 def reservation_update(request, reservation_id):
@@ -411,25 +406,35 @@ def reservation_update(request, reservation_id):
     return redirect('unlimited:stylist_list')
 
 
-def reservation_member_search(request, user_name):
-    # print(request.POST.get('search', None))
-    print(request.method)
-    member = request.POST['member']
-    print(member)
-    print(user_name)
-    if request.method == 'POST':
-        if 'search' in request.POST:
-            try:
-                user = User.objects.get(user_name=member)
-                print(user.first_name)
-                print(user.last_name)
-            except User.DoesNotExist:
-                user = 'ユーザーが見つかりません'
-                print(user)
-    context = {
-        'user': user
-    }
-    return render(request, 'unlimited/reservation_form.html', context)
+class UserSearch(generic.ListView):
+    model = User
+    template_name = 'unlimited/reservation_user_search_form.html'
+
+    def get_queryset(self):
+        user_id = self.request.GET.get('query')
+
+        # try:
+        #     object_list = User.objects.filter(user_name=user_id)
+        #     return object_list
+        # except User.DoesNotExist:
+        #     object_list = ['ユーザーが見つかりません', ]
+        #     return object_list
+
+        if user_id:
+            object_list = User.objects.filter(user_name=user_id)
+        else:
+            object_list = ['ユーザーが見つかりません', ]
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        # ログインユーザーのサロン：target_salon
+        target_salon = Salon.objects.get(salon=self.request.user.pk)
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'salon_id': target_salon.id,
+        })
+        return context
+
 
 # 以下は使用していないメソッド
 # def stylist_create(request):
@@ -456,3 +461,25 @@ def reservation_member_search(request, user_name):
 #             'form': form,
 #         }
 #         return render(request, 'unlimited/stylist_form.html', context)
+
+
+# def reservation_member_search(request, user_name):
+#     session_salon_id = request.session.pop('salon_id', None)  # ReservationCreateから受け取る
+#     if session_salon_id is None:
+#         return redirect('unlimited:stylist_list')
+#
+#     member = request.POST['member']
+#     if request.method == 'POST':
+#         if 'search' in request.POST:
+#             try:
+#                 user = User.objects.get(user_name=member)
+#                 # form = ReservationCreateForm(member)
+#
+#             except User.DoesNotExist:
+#                 user = 'ユーザーが見つかりません'
+#     context = {
+#         'user': user,
+#
+#     }
+#     # return render(request, 'unlimited/reservation_form.html', context)
+#     return redirect('unlimited:reservation_create', salon_id=session_salon_id)
