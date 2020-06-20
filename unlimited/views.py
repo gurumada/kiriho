@@ -123,7 +123,15 @@ class OnlyYouMixin(UserPassesTestMixin):
 class UserDetail(OnlyYouMixin, generic.DetailView):
     """ユーザーの詳細ページ"""
     model = User
-    template_name = 'unlimited/user_detail.html'  # デフォルトユーザーを使う場合に備え、きちんとtemplate名を書く
+    template_name = 'unlimited/user_detail.html'
+
+    def get_context_data(self, **kwargs):
+        user_name = self.request.user.user_name
+        reserve_info = Reservation.objects.filter(member=user_name)
+        context = super(UserDetail, self).get_context_data(**kwargs)
+        context.update({
+            'reserve_info': reserve_info
+        })
 
 
 class UserUpdate(OnlyYouMixin, generic.UpdateView):
@@ -434,7 +442,6 @@ class UserSearch(generic.ListView):
             'salon_id': target_salon.id,
         })
         return context
-
 
 # 以下は使用していないメソッド
 # def stylist_create(request):
