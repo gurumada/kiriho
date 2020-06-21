@@ -1,0 +1,19 @@
+.top-copy{
+    color:#FF6F61;
+}
+
+.copy-top{
+    font-family: "Sawarabi Gothic", "meiryo", "メイリオ", "YuGothic", "Yu Gothic";
+    font-weight: 600;
+    color: rgb(128, 124, 124);
+}
+
+.navbar{
+    opacity: 0.9;
+    box-shadow: 4px;
+}
+
+#Instagram{
+    text-align: center;
+    border-bottom: solid thick;
+}
