@@ -2,75 +2,92 @@
 <html lang="ja">
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-
-
     <title>キリホ</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/css/uikit.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
 </head>
-<body>
+<!--<body>-->
+<body class="uk-container">
     <!-- ナビバー -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="{% url 'unlimited:landing' %}">キリホ</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<!--    <nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+    <nav class="uk-navbar-container navbar" uk-sticky="bottom" uk-navbar>
+        <div class="uk-navbar-left">
+<!--          <a class="navbar-brand" href="{% url 'unlimited:landing' %}">-->
+            <a class="uk-navbar-item uk-logo" href="{% url 'unlimited:landing' %}">
+                キリホ
+            </a>
+<!--          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--          </button>-->
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          {% if user.is_authenticated %}
-            {% if user.is_user %}
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:salon_list' %}">サロン一覧</a>
-              </li>
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:user_detail' user.pk %}">マイページ</a>
-              </li>
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:user_update' user.pk %}">ユーザー情報更新</a>
-              </li>
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:password_change' %}">パスワードの変更</a>
-              </li>
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:email_change' %}">メールアドレスの変更</a>
-              </li>
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:logout' %}">ログアウト</a>
-              </li>
-            {% else %}
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:user_detail' user.pk %}">ダッシュボード</a>
-              </li>
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:stylist_list' %}">スタイリスト一覧</a>
-              </li>
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:user_update' user.pk %}">ユーザー情報更新</a>
-              </li>
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:password_change' %}">パスワードの変更</a>
-              </li>
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:email_change' %}">メールアドレスの変更</a>
-              </li>
-              <li>
-                <a class="nav-item nav-link" href="{% url 'unlimited:logout' %}">ログアウト</a>
-              </li>
-            {% endif %}
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-item nav-link" href="{% url 'unlimited:login' %}">
-            ログインはこちら
-          </a>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
+<!--          <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--            <ul class="navbar-nav mr-auto">-->
+            <ul class="uk-navbar-nav">
+                <li class="uk-active"><a href="#">ABOUT</a></li>
+                <li><a href="#">SERVICE</a></li>
+                <li>
+                    <a href="{% url 'unlimited:salon_list' %}">SALON LIST</a>
+                </li>
+            </ul>
+        </div>
+              {% if user.is_authenticated %}
+                {% if user.is_user %}
+                    <div class="uk-navbar-right">
+                        <ul class="uk-navbar-nav">
+                            <li>
+                                <a href="{% url 'unlimited:user_detail' user.pk %}">マイページ</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'unlimited:user_update' user.pk %}">ユーザー情報更新</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'unlimited:password_change' %}">パスワードの変更</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'unlimited:email_change' %}">メールアドレスの変更</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'unlimited:logout' %}">ログアウト</a>
+                            </li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <div class="uk-navbar-right">
+                        <ul class="uk-navbar-nav">
+                            <li>
+                                <a href="{% url 'unlimited:user_detail' user.pk %}">ダッシュボード</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'unlimited:stylist_list' %}">スタイリスト一覧</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'unlimited:user_update' user.pk %}">ユーザー情報更新</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'unlimited:password_change' %}">パスワードの変更</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'unlimited:email_change' %}">メールアドレスの変更</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'unlimited:logout' %}">ログアウト</a>
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
+              {% else %}
+                <div class="uk-navbar-right">
+                    <ul class="uk-navbar-nav">
+                        <li><a href="#">会員登録</a></li>
+                        <li><a href="{% url 'unlimited:login' %}">ログイン</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">お問い合わせ</a></li>
+                    </ul>
+                </div>
+              {% endif %}
     </nav>
 
     <!-- メインコンテント -->
@@ -80,23 +97,24 @@
         {% endblock %}
     </div>
 
+        <!-- footer -->
+    <section class="uk-section uk-section-muted">
+        <div class="uk-grid-match uk-child-width-1-2 uk-text-center-small" uk-grid>
+            <div class="uk-align-right">
+                ©Cylan Co., Ltd. All rights reserved.
+            </div>
+        </div>
+    </section>
     <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-            crossorigin="anonymous"></script>
-<!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
-<!--            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
-<!--            crossorigin="anonymous"></script>-->
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"-->
-<!--            integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"-->
-<!--            crossorigin="anonymous"></script>-->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
-            integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
-            crossorigin="anonymous"></script>
-    {% block extrajs %}{% endblock %}
+
+
+    <!-- UIkit JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.6/js/uikit.min.js"
+        integrity="sha256-v789mr/zBbgR53mfydCI78CSAF+9+nRqu+JRfs1UPg0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.6/js/uikit-icons.min.js"
+        integrity="sha256-l+AmZGiFz41J+gms80qC7faslJDberZDhjEsmDmQy8s=" crossorigin="anonymous"></script>
+
+    {% block footer %}
+    {% endblock %}
 </body>
 </html>

@@ -117,7 +117,7 @@ USE_TZ = True
 # Static File Setting #
 #######################
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/img')
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = (
 #     os.path.normpath(os.path.join(BASE_DIR, "static")),

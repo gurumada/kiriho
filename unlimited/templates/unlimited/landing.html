@@ -1,4 +1,83 @@
 {% extends "unlimited/base.html" %}
 {% block content %}
-<p>ここに、好きな内容を入れる。</p>
+    <!-- ページトップ -->
+    <section class="uk-section uk-section-default">
+        <div class="top-copy">
+            <h2 class="uk-heading-medium uk-text-center">定額カットし放題サービス</h2>
+            <h1 class="uk-heading-large uk-text-center">キリホ</h1>
+        </div>
+    </section>
+
+    <!-- サービス説明 -->
+    <section class="uk-section uk-section-default">
+        <h2 class="uk-heading-line uk-text-center">Concept</h2>
+        <div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
+            <div class="uk-flex-last@s uk-card-media-right uk-cover-container">
+                <img src="../static/img/StockSnap_9NBW1VRU8I.jpg" alt="" uk-cover uk-img>
+                <canvas width="600" height="400"></canvas>
+            </div>
+            <div>
+                <div id="CatchCopy" class="uk-card-body uk-card-large">
+                    <h2>サロン通いを手軽に、楽しく</h2>
+                    <p>サロン選びや髪型がもっと自由になったなら、もっと自分だけのスタイルを見つけやすくなるはず。<br>
+                        キリホはあなたのためのサロン、あなただけのスタイルを見つけるお手伝いをしたいと考えています。
+                    </p>
+                </div>
+            </div>
+        </div>
+        <button class="uk-button uk-button-default uk-button-large uk-align-right uk-margin" href="#">もっと詳しく</button>
+    </section>
+
+    <!-- サービス詳細 -->
+    <section class="uk-section uk-section-default">
+        <h2 class="uk-heading-line uk-text-center">Service</h2>
+        <div class="uk-grid-collapse uk-child-width-1-3" uk-grid>
+            <div class="uk-card uk-card-large uk-card-default uk-card-body">
+                <h3 class="uk-card-title">普通に通うよりもずっとお得</h3>
+                <p>半年間に3回以上通うなら、通常料金を支払うよりずっとお得にヘアサロンに通うことができます。</p>
+            </div>
+            <div class="uk-card uk-card-large uk-card-default uk-card-body">
+                <h3 class="uk-card-title">価格を気にせず何度でも通える</h3>
+                <p>金銭面を気にせず好きなタイミングでヘアサロンに通えます。維持が難しいショートカットなども、手軽に試せます。</p>
+            </div>
+            <div class="uk-card uk-card-large uk-card-default uk-card-body">
+                <h3 class="uk-card-title">特色で選ぶ</h3>
+                <p>サロンを選ぶ際には価格ではなく、そのお店の特色で選ぶことになります</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- サロンイメージ -->
+    <section class="uk-section uk-section-default">
+        <h2 class="uk-heading-line uk-text-center">提携SALON</h2>
+        <div class="uk-grid-small uk-child-width-1-3 uk-grid-row-large" uk-grid="masonry: true">
+            <div>
+                <img src="../static/img/StockSnap_9NBW1VRU8I.jpg" alt="" uk-img>
+            </div>
+            <div>
+                <img src="../static/img/StockSnap_9NBW1VRU8I.jpg" alt="" uk-img>
+            </div>
+            <div>
+                <img src="../static/img/StockSnap_9NBW1VRU8I.jpg" alt="" uk-img>
+            </div>
+            <div>
+                <img src="../static/img/StockSnap_9NBW1VRU8I.jpg" alt="" uk-img>
+            </div>
+            <div>
+                <img src="../static/img/StockSnap_9NBW1VRU8I.jpg" alt="" uk-img>
+            </div>
+            <div>
+                <img src="../static/img/StockSnap_9NBW1VRU8I.jpg" alt="" uk-img>
+            </div>
+        </div>
+        <button class="uk-button uk-button-default uk-button-large uk-align-right uk-margin" href="#">もっと詳しく</button>
+    </section>
+
+    <!-- TOPボタン -->
+    <div class="uk-align-right">
+        <a href="" uk-totop uk-scroll></a>
+    </div>
+
 {% endblock %}
+
