@@ -7,13 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
-<h1>サロン一覧</h1>
-    {% for salon in salon_list %}
-        {{ salon.salon_name}}<br />
-        {{ salon.home_page }}<br />
-        {{ salon.salon_phone_num }}<br />
-        {{ salon.salon_address }}<br />
-        {{ salon.business_hours }}<br />
-    {% endfor %}
+    <h2 class='uk-article-title'>SALON LIST</h2>
+    <div class="uk-overflow-container">
+        {% for salon in salon_list %}
+            <table class="uk-table uk-table-borderd">
+                <tr>
+                    <th><p class='uk-h2'>{{ salon.salon_name}}</p></th>
+                </tr>
+                <tr>
+                    <td>{{ salon.home_page }}</td>
+                </tr>
+                <tr>
+                    <td>{{ salon.salon_phone_num }}</td>
+                </tr>
+                <tr>
+                    <td>{{ salon.salon_address }}</td>
+                </tr>
+                <tr>
+                    <td>{{ salon.business_hours }}</td>
+                </tr>
+            </table>
+        {% endfor %}
+    </div>
 </body>
 {% endblock %}

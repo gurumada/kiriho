@@ -1,32 +1,31 @@
 {% extends "unlimited/base.html" %}
 
 {% block content %}
-<h3>スタイリスト一覧</h3>
-<!--ログインユーザーのサロンから所属するスタイリストを絞る-->
+<div class="uk-button-group uk-flex">
+ <a class="uk-button uk-button-default uk-width-1-3 uk-margin-small-bottom" href="{% url 'unlimited:user_search' %}">予約</a>
+ <a class="uk-button uk-button-default uk-width-1-3 uk-margin-small-bottom" href="{% url 'unlimited:stylist_create' salon_id %}">スタイリスト登録</a>
+ <a class="uk-button uk-button-default uk-width-1-3 uk-margin-small-bottom" href="{% url 'unlimited:salon_update' salon_id %}">サロン情報更新</a>
+</div>
+
+<p class='uk-h2'>STYLIST LIST</p>
+
 <table border="1" width="250">
- <tr>
-  <th>名前</th>
- </tr>
- {% for stylist in stylist_list %}
- <tr>
-  {% if salon_id == stylist.affiliation_salon.id %}
-   <td>
-    <a class="nav-item nav-link" href="{% url 'unlimited:stylist_detail' stylist.pk %}">{{ stylist.stylist_name }}</a>
-   </td>
-  {% endif %}
- </tr>
- {% endfor %}
+  <tr>
+   <th>名前</th>
+  </tr>
+  {% for stylist in stylist_list %}
+  <tr>
+   {% if salon_id == stylist.affiliation_salon.id %}
+    <td>
+     <a class="nav-item nav-link" href="{% url 'unlimited:stylist_detail' stylist.pk %}">{{ stylist.stylist_name }}</a>
+    </td>
+   {% endif %}
+  </tr>
+  {% endfor %}
 </table>
-<br />
-<a class="btn btn-primary btn-lg" href="{% url 'unlimited:salon_update' salon_id %}">サロン情報更新</a>
-<br />
-<br />
-<a class="btn btn-primary btn-lg" href="{% url 'unlimited:stylist_create' salon_id %}">スタイリスト登録</a>
-<br />
-<br />
-<a class="btn btn-primary btn-lg" href="{% url 'unlimited:user_search' %}">予約</a>
-<br />
-<br />
+
+
+
 
 <h2>{{ month }}月の施術完了数 : {{ monthly_count }}件</h2>
 <h2>合計金額：{{ monthly_sales }}円</h2>
