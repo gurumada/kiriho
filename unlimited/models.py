@@ -105,7 +105,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                                   )
     # select_plan = models.ForeignKey(Plan, verbose_name='選択プラン', blank=True, on_delete=models.PROTECT, default='1')
     select_plan = models.IntegerField(verbose_name='選択プラン', choices=PLAN, default=0)
-    payment_completion_date = models.DateField(verbose_name='支払い完了日', blank=True, default=timezone.now)
+    payment_completion_date = models.DateField(verbose_name='支払い完了日', blank=True, default='9991-12-31')
     expire_date = models.DateField(verbose_name='有効期限', blank=True, default=timezone.now)
 
     objects = CustomUserManager()

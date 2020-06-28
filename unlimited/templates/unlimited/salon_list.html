@@ -2,32 +2,42 @@
 
 {% extends "unlimited/base.html" %}
 {% block content %}
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-</head>
-<body>
-    <h2 class='uk-article-title'>SALON LIST</h2>
-    <div class="uk-overflow-container">
-        {% for salon in salon_list %}
-            <table class="uk-table uk-table-borderd">
-                <tr>
-                    <th><p class='uk-h2'>{{ salon.salon_name}}</p></th>
-                </tr>
-                <tr>
-                    <td>{{ salon.home_page }}</td>
-                </tr>
-                <tr>
-                    <td>{{ salon.salon_phone_num }}</td>
-                </tr>
-                <tr>
-                    <td>{{ salon.salon_address }}</td>
-                </tr>
-                <tr>
-                    <td>{{ salon.business_hours }}</td>
-                </tr>
-            </table>
-        {% endfor %}
-    </div>
-</body>
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+<!--</head>-->
+<!--<body>-->
+<section class="uk-section uk-section-default uk-text-center">
+    <h2 class="uk-heading-line uk-text-center">SALON LIST</h2>
+
+
+<!--    <h2 class='uk-article-title'>SALON LIST</h2>-->
+
+        <div class="uk-overflow-container">
+            {% for salon in salon_list %}
+            <div class="uk-card uk-card-large uk-card-default uk-align-center uk-grid-collapse uk-child-width-1-1@s uk-margin" uk-grid>
+                <table class="uk-table uk-table-borderd">
+                    <tr>
+                        <th><p class='uk-h2'>{{ salon.salon_name}}</p></th>
+                    </tr>
+                    <tr>
+                        <td>{{ salon.home_page }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ salon.salon_phone_num }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ salon.salon_address }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ salon.business_hours }}</td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+<!--    </div>-->
+</section>
+<br/>
+<!--</body>-->
 {% endblock %}

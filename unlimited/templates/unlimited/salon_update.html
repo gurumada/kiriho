@@ -1,11 +1,19 @@
 {% extends "unlimited/base.html" %}
 
 {% block content %}
-<h3>サロン情報更新</h3>
-<form action="" method="POST">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <button calss="button is-primary" type="submit">更新</button>
-</form>
 
+<section class="uk-section uk-section-default uk-text-center">
+    <h2 class="uk-heading-line uk-text-center">店舗情報更新</h2>
+    <div class="uk-card uk-card-large uk-card-default uk-align-center uk-grid-collapse uk-child-width-1-1@s uk-margin" uk-grid>
+
+<!--        <h3>サロン情報更新</h3>-->
+        <form action="" method="POST">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <br/>
+            <button calss="uk-button uk-button-default" type="submit">更新</button>
+        </form>
+    </div>
+</section>
+<br/>
 {% endblock %}

@@ -258,7 +258,10 @@ def recursive_choice_setting(obj_treatment_info, int_list_no, date_reserve_date)
 
     # 最新の予約が「キャンセル」だった場合
     elif obj_treatment_info.values('status')[int_list_no]['status'] == 2:
-        return recursive_choice_setting(obj_treatment_info, int_list_no + 1, date_reserve_date)
+        try:
+            return recursive_choice_setting(obj_treatment_info, int_list_no + 1, date_reserve_date)
+        except IndexError:
+            return full_cut
 
     # 最新の予約が「ドタキャン」だった場合
     elif obj_treatment_info.values('status')[int_list_no]['status'] == 3:

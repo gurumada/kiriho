@@ -1,0 +1,117 @@
+{% extends "unlimited/base.html" %}
+
+{% block content %}
+
+<section class="uk-section uk-section-default uk-text-center">
+    {% if payment_completion_date == '9991-12-31' %}
+        <h2 class="uk-heading-line uk-text-center">現在予約できません</h2>
+    {% endif %}
+    <h2 class="uk-heading-line uk-text-center">メンバーステータス</h2>
+    <div class="uk-card uk-card-large uk-card-default uk-align-center uk-grid-collapse uk-child-width-1-1@s uk-margin" uk-grid>
+<!--        <div id="CatchCopy" class="uk-card-body uk-card-large uk-align-center uk-text-center">-->
+<!--        <div class="uk-card uk-card-large uk-card-default uk-align-center">-->
+            {% for info in user_info %}
+                <table>
+                    <tr>
+<!--                        <th>選択プラン：</th>-->
+                        <td>選択プラン：{{ info.get_select_plan_display }}</td>
+                    </tr>
+                    <tr>
+<!--                        <th>現在のステータス：</th>-->
+                        <td>現在のステータス：{{ status }}</td>
+                    </tr>
+                    <tr>
+<!--                        <th>支払い完了日：</th>-->
+                        <td>支払い完了日：{{ info.payment_completion_date }}</td>
+                    </tr>
+                    <tr>
+<!--                        <th>有効期限：</th>-->
+                        <td>有効期限：{{ info.expire_date }}</td>
+                    </tr>
+                </table>
+            {% endfor %}
+<!--        </div>-->
+    </div>
+    {% if payment_completion_date == '9991-12-31' %}
+    {% else %}
+        <a class="uk-button uk-button-default" href="#modal-sections" uk-toggle>会員証表示</a>
+    {% endif %}
+
+    <div id="modal-sections" uk-modal>
+        <div class="uk-modal-dialog">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <div class="uk-modal-header">
+                <h2 class="uk-modal-title">会員証</h2>
+            </div>
+            <div class="uk-modal-body">
+                {% for info in user_info %}
+                <table>
+                    <tr>
+                        <th>ユーザー名：</th>
+                        <td>{{ info.user_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>名前：</th>
+                        <td>{{ info.last_name }}{{ info.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>選択プラン：</th>
+                        <td>{{ info.get_select_plan_display }}</td>
+                    </tr>
+                    <tr>
+                        <th>現在のステータス：</th>
+                        <td>{{ status }}</td>
+                </table>
+                {% endfor %}
+<!--                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>-->
+            </div>
+
+<!--            <div class="uk-modal-footer uk-text-right">-->
+<!--                <button class="uk-button uk-button-default uk-modal-close" type="button">閉じる</button>-->
+<!--                <button class="uk-button uk-button-primary" type="button">Save</button>-->
+<!--            </div>-->
+        </div>
+    </div>
+</section>
+
+<button class="uk-button uk-align-right uk-button-default" uk-toggle="target: .my-class; animation: uk-animation-fade; queued: true">more...</button>
+<!--    <h2 class="uk-heading-line uk-text-center" type="button" uk-toggle="target: .my-class; animation: uk-animation-fade; queued: true">MORE</h2>-->
+<!--    <p type="button" uk-toggle="target: .my-class; animation: uk-animation-fade; queued: true">予約履歴</p>-->
+
+<section class="uk-section uk-section-default my-class uk-align-center">
+     <h2 class="uk-heading-line uk-text-center">予約履歴</h2>
+    {% for reserve in reserve_history %}
+    <div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-1@s uk-margin uk-align-center uk-text-center" uk-grid>
+        <table>
+            <tr>
+                <td>サロン : {{ reserve.salon }}</td>
+            </tr>
+            <tr>
+                <td>スタイリスト : {{ reserve.stylist }}</td>
+            </tr>
+            <tr>
+                <td>施術内容 : {{ reserve.get_treatment_display }}</td>
+            </tr>
+            <tr>
+                <td>追加施術 : {{ reserve.add_treat }}</td>
+            </tr>
+            <tr>
+                <td>予約日 : {{ reserve.date }}</td>
+            </tr>
+            <tr>
+                <td>開始時間 : {{ reserve.start }}</td>
+            </tr>
+            <tr>
+                <td>終了時間{{ reserve.end }}</td>
+            </tr>
+            <tr>
+                <td>備考 : {{ reserve.remarks }}</td>
+            </tr>
+            <tr>
+                <td>ステータス : {{ reserve.get_status_display }}</td>
+            </tr>
+        </table>
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}

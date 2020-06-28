@@ -1,3 +1,5 @@
+import datetime
+
 from .models import Salon, Stylist, Reservation
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -240,8 +242,103 @@ class EmailChangeComplete(LoginRequiredMixin, generic.TemplateView):
 
 
 class Dashboard(LoginRequiredMixin, generic.TemplateView):
-    model = User
-    template_name = 'dashboard.html'
+    model = Reservation
+    template_name = 'unlimited/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        #ユーザー情報を取得
+        user_info = User.objects.filter(pk=self.kwargs['pk'])
+        user_name = user_info.values('user_name')
+        user_name = user_name[0]['user_name']
+
+        payment_completion_date = user_info.values('payment_completion_date')
+        payment_completion_date = payment_completion_date[0]['payment_completion_date']
+        payment_completion_date = str(payment_completion_date)
+        # print(type(payment_completion_date))
+
+        if payment_completion_date == '9991-12-31':
+            status = '利用不可'
+            #todo:支払い完了してない場合の処理
+        else:
+            user_status = Reservation.objects.filter(member=user_name).order_by('-date')
+            if user_status.count() == 0:
+                status = 'フルカット'
+            else:
+                status = get_user_status(user_status, 0)
+
+        # 予約履歴を取得
+        reserve_history = Reservation.objects.filter(member=user_name).order_by('-date')
+
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'user_info': user_info,
+            'payment_completion_date': payment_completion_date,
+            'status': status,
+            'reserve_history': reserve_history,
+        })
+        return context
+
+
+def get_user_status(obj_reserve_history, int_list_no):
+    # 最新の予約が「予約済み」状態だった場合
+    if obj_reserve_history.values('status')[int_list_no]['status'] == 0:
+        return '利用不可'
+    # 最新の予約が「済」だった場合
+    elif obj_reserve_history.values('status')[int_list_no]['status'] == 1:
+        reserved_date = obj_reserve_history.values('date')[int_list_no]['date']
+        now = datetime.datetime.now()
+        interval_date = now.date() - reserved_date
+        # interval_date = date_reserve_date - reserved_date
+
+        # 当日に2回行こうとした場合、利用不可
+        if interval_date == datetime.timedelta(days=0):
+            return '利用不可'
+
+        # 最新の予約から30日経過していたらフルカット
+        elif interval_date > datetime.timedelta(days=30):
+            return 'フルカット'
+
+        # 最新の予約から30日経過していなかったらメンテカット
+        elif interval_date <= datetime.timedelta(days=30):
+            return 'メンテカット'
+
+    # 最新の予約が「キャンセル」だった場合
+    elif obj_reserve_history.values('status')[int_list_no]['status'] == 2:
+        try:
+            return get_user_status(obj_reserve_history, int_list_no + 1)
+        except IndexError:
+            return 'フルカット'
+
+    # 最新の予約が「ドタキャン」だった場合
+    elif obj_reserve_history.values('status')[int_list_no]['status'] == 3:
+        reserved_date = obj_reserve_history.values('date')[int_list_no]['date']
+        now = datetime.datetime.now()
+        interval_date = now.date() - reserved_date
+        # interval_date = date_reserve_date - reserved_date
+
+        # ドタキャンから20日経過していた場合
+        if interval_date > datetime.timedelta(days=20):
+            try:
+                reserved_date = obj_reserve_history.values('date')[int_list_no + 1]['date']
+                now = datetime.datetime.now()
+                interval_date = now.date() - reserved_date
+                # interval_date = date_reserve_date - reserved_date
+
+                # ドタキャンより前の予約から30日経過していた場合
+                if interval_date > datetime.timedelta(days=30):
+                    return 'フルカット'
+
+                # ドタキャンより前の予約から30日経過していなかった場合
+                elif interval_date <= datetime.timedelta(days=30):
+                    return 'メンテカット'
+
+            # ドタキャンより前の予約がなかったら
+            except IndexError:
+                return 'フルカット'
+
+        # ドタキャンから20日経過していなかったら利用不可
+        elif interval_date <= datetime.timedelta(days=20):
+            return '利用不可'
 
 
 class SalonListView(generic.ListView):

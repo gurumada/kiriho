@@ -1,7 +1,11 @@
 {% extends "unlimited/base.html" %}
 {% block content %}
-<p>
-    予約登録が完了しました。<br>
-    <a class="btn btn-primary btn-lg" href="{% url 'unlimited:stylist_list' %}">スタイリスト一覧へ</a>
-</p>
+<section class="uk-section uk-section-default uk-text-center">
+    <h2 class="uk-heading-line uk-text-center">予約登録完了</h2>
+    <div class="uk-card uk-card-large uk-card-default uk-align-center uk-grid-collapse uk-child-width-1-1@s uk-margin" uk-grid>
+        <p>
+            <a class="uk-button uk-button-default" href="{% url 'unlimited:stylist_list' %}">スタイリスト一覧へ</a>
+        </p>
+    </div>
+</section>
 {% endblock %}

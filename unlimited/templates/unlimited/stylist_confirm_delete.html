@@ -1,10 +1,17 @@
 {% extends "unlimited/base.html" %}
 
 {% block content %}
-    <p>名前：{{ stylist.stylist_name }}を削除します。よろしいですか。</p>
-    <form action="" method="post">
-        {% csrf_token %}
-        <button type="submit">削除</button>
-    </form>
-</body>
+<section class="uk-section uk-section-default uk-text-center">
+    <h2 class="uk-heading-line uk-text-center">スタイリスト削除</h2>
+    <div class="uk-card uk-card-large uk-card-default uk-align-center uk-grid-collapse uk-child-width-1-1@s uk-margin" uk-grid>
+
+        <p>名前：{{ stylist.stylist_name }}を削除します。よろしいですか。</p>
+        <form action="" method="post">
+            {% csrf_token %}
+            <br/>
+            <button calss="uk-button uk-button-default" type="submit">削除</button>
+        </form>
+    </div>
+</section>
+<br/>
 {% endblock %}

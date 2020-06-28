@@ -1,65 +1,71 @@
 {% extends "unlimited/base.html" %}
 
 {% block content %}
+<section class="uk-section uk-section-default uk-text-center">
+    <h2 class="uk-heading-line uk-text-center">パスワード変更</h2>
+    <div class="uk-card uk-card-large uk-card-default uk-align-center uk-grid-collapse uk-child-width-1-1@s uk-margin" uk-grid>
+        <form action="" method="POST">
+            {{ form.non_field_errors }}
+            <table>
+                    <tr>
+                        <th>{{ form.member.label_tag }}</th>
+                        <td>{{ form.member }}</td>
+                        <td><span class="helptext">{{ form.member.help_text }}</span></td>
+                        <td>{{ form.member.errors }}</td>
+                    </tr>
+                <tr>
+                    <th>{{ form.salon.label_tag }}</th>
+                    <td>{{ form.salon }}</td>
+                    <td>{{ form.salon.errors }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.stylist.label_tag }}</th>
+                    <td>{{ form.stylist }}</td>
+                    <td>{{ form.stylist.errors }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.plan.label_tag }}</th>
+                    <td>{{ form.plan }}</td>
+                    <td>{{ form.plan.errors }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.treatment.label_tag }}</th>
+                    <td>{{ form.treatment }}</td>
+                    <td>{{ form.treatment.errors }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.add_treat.label_tag }}</th>
+                    <td>{{ form.add_treat }}{{ form.add_treat.errors }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>{{ form.date.label_tag }}</th>
+                    <td>{{ form.date }}</td>
+                    <td>{{ form.date.errors }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.start.label_tag }}</th>
+                    <td>{{ form.start }}</td>
+                    <td>{{ form.start.errors }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.end.label_tag }}</th>
+                    <td>{{ form.end }}</td>
+                    <td>{{ form.end.errors }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.remarks.label_tag }}</th>
+                    <td>{{ form.remarks }}</td>
+                    <td>{{ form.remarks.errors }}</td>
+                </tr>
+            </table>
 
-<form action="" method="POST">
-    {{ form.non_field_errors }}
-    <table>
-            <tr>
-                <th>{{ form.member.label_tag }}</th>
-                <td>{{ form.member }}</td>
-                <td><span class="helptext">{{ form.member.help_text }}</span></td>
-                <td>{{ form.member.errors }}</td>
-            </tr>
-        <tr>
-            <th>{{ form.salon.label_tag }}</th>
-            <td>{{ form.salon }}</td>
-            <td>{{ form.salon.errors }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.stylist.label_tag }}</th>
-            <td>{{ form.stylist }}</td>
-            <td>{{ form.stylist.errors }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.plan.label_tag }}</th>
-            <td>{{ form.plan }}</td>
-            <td>{{ form.plan.errors }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.treatment.label_tag }}</th>
-            <td>{{ form.treatment }}</td>
-            <td>{{ form.treatment.errors }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.add_treat.label_tag }}</th>
-            <td>{{ form.add_treat }}{{ form.add_treat.errors }}</td>
-            <td></td>
-        </tr>
-        <tr>
-            <th>{{ form.date.label_tag }}</th>
-            <td>{{ form.date }}</td>
-            <td>{{ form.date.errors }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.start.label_tag }}</th>
-            <td>{{ form.start }}</td>
-            <td>{{ form.start.errors }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.end.label_tag }}</th>
-            <td>{{ form.end }}</td>
-            <td>{{ form.end.errors }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.remarks.label_tag }}</th>
-            <td>{{ form.remarks }}</td>
-            <td>{{ form.remarks.errors }}</td>
-        </tr>
-    </table>
-
-    {% csrf_token %}
-    <button calss="button is-primary" type="submit">登録</button>
-</form>
+            {% csrf_token %}
+            <br/>
+            <button calss="uk-button uk-button-default" type="submit">登録</button>
+        </form>
+    </div>
+</section>
+<br/>
 {% endblock %}
 

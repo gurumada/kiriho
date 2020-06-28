@@ -1,70 +1,54 @@
 {% extends "unlimited/base.html" %}
 
 {% block content %}
+<section class="uk-section uk-section-default uk-text-center">
+    <h2 class="uk-heading-line uk-text-center">サロン予約</h2>
+    <div class="uk-card uk-card-large uk-card-default uk-align-center uk-grid-collapse uk-child-width-1-1@s uk-margin" uk-grid>
 
-<form action="" method="get">
-    <input name="query" value="{{ request.GET.query }}" type="text">
-    <button type="submit">検索</button>
-</form>
-
- {% for user in user_list %}
-     {% if user.is_user == True %}
-<!--        <a class="btn btn-primary btn-lg" href="{% url 'unlimited:reservation_create' salon_id user.user_name %}">-->
-            <table>
-                <tr>
-                    <th>ユーザーID：</th>
-                    <td>{{ user.user_name }}</td>
-                </tr>
-                <tr>
-                    <th>名前：</th>
-                    <td>{{ user.last_name }}{{ user.first_name }}</td>
-                </tr>
-                <tr>
-                    <th>プラン：</th>
-                    <td>{{ user.get_select_plan_display }}</td>
-                </tr>
-            </table>
-
-<!--        </a>-->
-
-        <form action="{% url 'unlimited:reservation_create' salon_id user.user_name %}" method="GET" id="reserve_info" name="reserve_info">
-            {% csrf_token %}
-<!--            {{ form.non_field_errors }}-->
-<!--            <table>-->
-<!--                <tr>-->
-<!--                    <th>{{ form.date.label_tag }}</th>-->
-<!--                    <td>{{ form.date }}</td>-->
-<!--                    <td>{{ form.date.errors }}</td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <th>{{ form.start.label_tag }}</th>-->
-<!--                    <td>{{ form.start }}</td>-->
-<!--                    <td>{{ form.start.errors }}</td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <th>{{ form.end.label_tag }}</th>-->
-<!--                    <td>{{ form.end }}</td>-->
-<!--                    <td>{{ form.end.errors }}</td>-->
-<!--                </tr>-->
-<!--            </table>-->
-            <div>
-                <label for="reserve_date">予約日：</label>
-                <input type="date" id="reserve_date" name="reserve_date" required>
-            </div>
-            <div>
-                <label for="start">開始時間：</label>
-                <input type="time" id="start" name="start" required>
-            </div>
-            <div>
-                <label for="end">終了時間：</label>
-                <input type="time" id="end" name="end" required>
-            </div>
-
-            <button calss="button is-primary" type="submit">次へ</button>
-<!--            <a class="btn btn-primary btn-lg" href="{% url 'unlimited:reservation_create' salon_id user.user_name %}">次へ</a>-->
+        <form action="" method="get">
+            <input name="query" value="{{ request.GET.query }}" type="text">
+            <button type="submit" calss="uk-button uk-button-default">検索</button>
         </form>
-     {% endif %}
- {% endfor %}
 
+         {% for user in user_list %}
+             {% if user.is_user == True %}
+                <table>
+                    <tr>
+<!--                        <th></th>-->
+                        <td>ユーザーID：{{ user.user_name }}</td>
+                    </tr>
+                    <tr>
+<!--                        <th></th>-->
+                        <td>名前：{{ user.last_name }}{{ user.first_name }}</td>
+                    </tr>
+                    <tr>
+<!--                        <th></th>-->
+                        <td>プラン：{{ user.get_select_plan_display }}</td>
+                    </tr>
+                </table>
+
+                <form action="{% url 'unlimited:reservation_create' salon_id user.user_name %}" method="GET" id="reserve_info" name="reserve_info">
+                    {% csrf_token %}
+                    <div>
+                        <label for="reserve_date">予約日：</label>
+                        <input type="date" id="reserve_date" name="reserve_date" required>
+                    </div>
+                    <div>
+                        <label for="start">開始時間：</label>
+                        <input type="time" id="start" name="start" required>
+                    </div>
+                    <div>
+                        <label for="end">終了時間：</label>
+                        <input type="time" id="end" name="end" required>
+                    </div>
+
+                    <button calss="uk-button uk-button-default" type="submit">次へ</button>
+
+                </form>
+             {% endif %}
+         {% endfor %}
+    </div>
+</section>
+<br/>
 
 {% endblock %}

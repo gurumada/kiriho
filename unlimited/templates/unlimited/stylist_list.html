@@ -7,73 +7,77 @@
  <a class="uk-button uk-button-default uk-width-1-3 uk-margin-small-bottom" href="{% url 'unlimited:salon_update' salon_id %}">サロン情報更新</a>
 </div>
 
-<p class='uk-h2'>STYLIST LIST</p>
+<section class="uk-section uk-section-default uk-text-center">
+    <h2 class="uk-heading-line uk-text-center">STYLIST LIST</h2>
+    <div class="uk-card uk-card-large uk-card-default uk-align-center uk-grid-collapse uk-child-width-1-1@s uk-margin" uk-grid>
 
-<table border="1" width="250">
-  <tr>
-   <th>名前</th>
-  </tr>
-  {% for stylist in stylist_list %}
-  <tr>
-   {% if salon_id == stylist.affiliation_salon.id %}
-    <td>
-     <a class="nav-item nav-link" href="{% url 'unlimited:stylist_detail' stylist.pk %}">{{ stylist.stylist_name }}</a>
-    </td>
-   {% endif %}
-  </tr>
-  {% endfor %}
-</table>
+<!--       <p class='uk-h2'>STYLIST LIST</p>-->
 
+       <table border="1" width="250">
+         <tr>
+          <th>名前</th>
+         </tr>
+         {% for stylist in stylist_list %}
+         <tr>
+          {% if salon_id == stylist.affiliation_salon.id %}
+           <td>
+            <a class="nav-item nav-link" href="{% url 'unlimited:stylist_detail' stylist.pk %}">{{ stylist.stylist_name }}</a>
+           </td>
+          {% endif %}
+         </tr>
+         {% endfor %}
+       </table>
 
+       <h3 class="uk-heading-line uk-text-center">{{ month }}月の施術完了数 : {{ monthly_count }}件</h3>
+<!--       <h2>{{ month }}月の施術完了数 : {{ monthly_count }}件</h2>-->
+       <h3 class="uk-heading-line uk-text-center">合計金額：{{ monthly_sales }}円</h3>
+<!--       <h2>合計金額：{{ monthly_sales }}円</h2>-->
+       <h2 class="uk-heading-line uk-text-center">予約情報</h2>
+<!--       <h3>予約情報</h3>-->
 
+       <table border="5" width="100%">
+        <tr>
+         <th>お客様ID</th>
+         <th>予約サロン</th>
+         <th>指名スタイリスト</th>
+         <th>プラン</th>
+         <th>施術</th>
+         <th>追加施術</th>
+         <th>予約日</th>
+         <th>開始時間</th>
+         <th>終了時間</th>
+         <th>備考</th>
+         <th>ステータス</th>
+         <th>処理</th>
+        </tr>
+        {% for reservation in reservations %}
+        <tr>
+         <td>{{ reservation.member }}</td>
+         <td>{{ reservation.salon }}</td>
+         <td>{{ reservation.stylist }}</td>
+         <td>{{ reservation.get_plan_display }}</td>
+         <td>{{ reservation.get_treatment_display }}</td>
+         <td>{{ reservation.add_treat }}</td>
+         <td>{{ reservation.date }}</td>
+         <td>{{ reservation.start }}</td>
+         <td>{{ reservation.end }}</td>
+         <td>{{ reservation.remarks }}</td>
+         <td>{{ reservation.get_status_display }}</td>
+         <td>
+          <form action="{% url 'unlimited:reservation_update' reservation.id %}" method="POST">
 
-<h2>{{ month }}月の施術完了数 : {{ monthly_count }}件</h2>
-<h2>合計金額：{{ monthly_sales }}円</h2>
-<h3>予約情報</h3>
+           <button class="uk-button uk-button-default" type="submit" name="complete">済</button><br/>
+           <button class="uk-button uk-button-default" type="submit" name="cancel">キャンセル</button><br/>
+           <button class="uk-button uk-button-default" type="submit" name="dotacan">ドタキャン</button>
+           {% csrf_token %}
+          </form>
+         </td>
+        </tr>
+        {% endfor %}
+       </table>
+    </div>
+</section>
+<br/>
 
-<table border="5" width="100%">
- <tr>
-  <th>お客様ID</th>
-  <th>予約サロン</th>
-  <th>指名スタイリスト</th>
-  <th>プラン</th>
-  <th>施術</th>
-  <th>追加施術</th>
-  <th>予約日</th>
-  <th>開始時間</th>
-  <th>終了時間</th>
-  <th>備考</th>
-  <th>ステータス</th>
-  <th>処理</th>
- </tr>
- {% for reservation in reservations %}
- <tr>
-  <td>{{ reservation.member }}</td>
-  <td>{{ reservation.salon }}</td>
-  <td>{{ reservation.stylist }}</td>
-  <td>{{ reservation.get_plan_display }}</td>
-  <td>{{ reservation.get_treatment_display }}</td>
-  <td>{{ reservation.add_treat }}</td>
-  <td>{{ reservation.date }}</td>
-  <td>{{ reservation.start }}</td>
-  <td>{{ reservation.end }}</td>
-  <td>{{ reservation.remarks }}</td>
-  <td>{{ reservation.get_status_display }}</td>
-  <td>
-   <form action="{% url 'unlimited:reservation_update' reservation.id %}" method="POST">
-
-    <button class="button is-primary" type="submit" name="complete">済</button><br/>
-<!--   </form>-->
-<!--   <form action="{% url 'unlimited:reservation_update' reservation.id %}" method="POST">-->
-    <button class="button is-primary" type="submit" name="cancel">キャンセル</button><br/>
-<!--   </form>-->
-<!--   <form action="{% url 'unlimited:reservation_update' reservation.id %}" method="POST">-->
-    <button class="button is-primary" type="submit" name="dotacan">ドタキャン</button>
-    {% csrf_token %}
-   </form>
-  </td>
- </tr>
- {% endfor %}
-</table>
 
 {% endblock %}
