@@ -25,6 +25,15 @@ from dateutil.relativedelta import relativedelta
 User = get_user_model()
 
 
+def distribution(request):
+    user = request.user
+    print(user)
+    if user.is_user:
+        return redirect('unlimited:salon_list')
+    else:
+        return redirect('unlimited:stylist_list')
+
+
 class Landing(generic.TemplateView):
     template_name = 'unlimited/landing.html'
 
@@ -246,7 +255,7 @@ class Dashboard(LoginRequiredMixin, generic.TemplateView):
     template_name = 'unlimited/dashboard.html'
 
     def get_context_data(self, **kwargs):
-        #ユーザー情報を取得
+        # ユーザー情報を取得
         user_info = User.objects.filter(pk=self.kwargs['pk'])
         user_name = user_info.values('user_name')
         user_name = user_name[0]['user_name']
@@ -258,7 +267,7 @@ class Dashboard(LoginRequiredMixin, generic.TemplateView):
 
         if payment_completion_date == '9991-12-31':
             status = '利用不可'
-            #todo:支払い完了してない場合の処理
+            # todo:支払い完了してない場合の処理
         else:
             user_status = Reservation.objects.filter(member=user_name).order_by('-date')
             if user_status.count() == 0:
@@ -539,6 +548,18 @@ class UserSearch(generic.ListView):
             'salon_id': target_salon.id,
         })
         return context
+
+
+class PrivacyPolicy(generic.TemplateView):
+    template_name = 'unlimited/privacy_policy.html'
+
+
+class TermsOfService(generic.TemplateView):
+    template_name = 'unlimited/terms_of_service.html'
+
+
+class TransactionLaw(generic.TemplateView):
+    template_name = 'unlimited/transaction_law.html'
 
 # 以下は使用していないメソッド
 # def stylist_create(request):

@@ -35,5 +35,9 @@ urlpatterns = [
     path('reservation_create/complete/', views.ReservationCreateComplete.as_view(), name='reservation_create_complete'),
     path('reservation_update/<int:reservation_id>/', views.reservation_update, name='reservation_update'),
     path('dashboard/<int:pk>/', views.Dashboard.as_view(), name='dashboard'),
+    path('privacy_policy/', views.PrivacyPolicy.as_view(), name='privacy_policy'),
+    path('terms_of_service/', views.TermsOfService.as_view(), name='terms_of_service'),
+    path('transaction_law/', views.TransactionLaw.as_view(), name='transaction_law'),
+    path('distribution/', views.distribution, name='distribution'),
 
 ]

@@ -130,7 +130,7 @@ AUTH_USER_MODEL = 'unlimited.User'
 
 LOGIN_URL = 'unlimited:login'
 # TODO:LOGIN_REDIRECT_URLはダッシュボードページにする
-LOGIN_REDIRECT_URL = 'unlimited:landing'
+LOGIN_REDIRECT_URL = 'unlimited:distribution'
 LOGOUT_REDIRECT_URL = 'unlimited:landing'
 
 #######################
